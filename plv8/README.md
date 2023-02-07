@@ -22,8 +22,22 @@ To set up a Postgres with plv8 container:
     # or
     docker run --name container_name -e POSTGRES_PASSWORD=password -p 5432:5432 -d wensheng/plv8:14-2.3.15
 
+## Use plv8
+
+Use psql:
+
+    psql -U postgres -h localhost                                                                        [master✗]  [04:57:10]
+    # enter your password
+    postgres=# create extension plv8;
+    CREATE EXTENSION
+    postgres=# DO $$ plv8.elog(NOTICE, `Hello world from plv8 ${plv8.version}!`); $$ LANGUAGE plv8;
+    NOTICE:  Hello world from plv8 3.1.5!
+    DO
+    postgres=#
+
 ## Customize
 
 Clone this, modify one of docker files, i.e. Dockerfile.plv8.v3.0.0, then build your own image:
 
     docker build -t mytag -f Dockerfile.plv8.v3.0.0 .
+
