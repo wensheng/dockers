@@ -1,6 +1,8 @@
-# Postgres docker with plv8 (and pglogical)
+# Postgres docker with PLV8 (and pglogical)
 
 [Docker Hub](https://hub.docker.com/r/wensheng/plv8)
+
+[PLV8](https://plv8.github.io/) is the Javascript language extension for PostgreSQL.
 
 plv8 versions available:
 
@@ -26,7 +28,7 @@ To set up a Postgres with plv8 container:
 
 Use psql:
 
-    psql -U postgres -h localhost                                                                        [master✗]  [04:57:10]
+    psql -U postgres -h localhost
     # enter your password
     postgres=# create extension plv8;
     CREATE EXTENSION
