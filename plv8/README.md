@@ -39,7 +39,11 @@ Use psql:
 
 ## Customize
 
-Clone this, modify one of docker files, i.e. Dockerfile.plv8.v3.0.0, then build your own image:
+Clone this, modify one of the docker files, i.e. Dockerfile.plv8.v3.0.0, then build your own image:
 
     docker build -t mytag -f Dockerfile.plv8.v3.0.0 .
 
+## References
+
+1. https://github.com/reediculous456/docker-pglogical
+1. https://github.com/sibedge-llc/plv8-dockerfiles
