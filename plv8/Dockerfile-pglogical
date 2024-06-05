@@ -42,7 +42,7 @@ COPY --from=plv8 /usr/lib/postgresql/${PG_MAJOR}/lib/plv8-${PLV8_VERSION}.so /us
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y postgresql-common && \
     sh /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y && \
-    apt-get install --no-install-recommends -y postgresql-${PG_MAJOR}-pglogical && \
+    apt-get install --no-install-recommends -y postgresql-${PG_MAJOR}-pglogical postgresql-plpython3-${PG_MAJOR} && \
     rm -rf /var/lib/apt/lists/*
 
 RUN echo "wal_level = 'logical'" >> /usr/share/postgresql/postgresql.conf.sample && \
