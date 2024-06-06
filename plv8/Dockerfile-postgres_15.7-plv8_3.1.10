@@ -7,6 +7,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
     postgresql-$PG_MAJOR \
     ca-certificates \
     curl \
+    wget \
     git-core \
     gnupg \
     gpp \

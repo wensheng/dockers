@@ -1,6 +1,9 @@
 # vectorv8py
 
-Docker image for Postgresql server with pgvector, PLv8, and PL/Python3 included.
+Docker image for Postgresql server with 
+[pgvector](https://github.com/pgvector/pgvector),
+[PLv8](https://plv8.github.io/), and
+[PL/Python3](https://www.postgresql.org/docs/current/plpython.html) included.
 
 To use:
 
