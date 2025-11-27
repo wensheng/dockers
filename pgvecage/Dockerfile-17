@@ -1,0 +1,50 @@
+FROM pgvector/pgvector:0.8.1-pg17 AS vec_age
+
+ENV PGVS_VERSION=0.9.0 PG_MAJOR=17 AGE_BRANCH=release/PG17/1.6.0
+
+RUN --mount=type=cache,target=/var/cache/apt \
+    buildDependencies="build-essential \
+    postgresql-$PG_MAJOR \
+    ca-certificates \
+    curl \
+    wget \
+    git-core \
+    gnupg \
+    gpp \
+    cpp \
+    flex \
+    bison \
+    jq \
+    pkg-config \
+    apt-transport-https \
+    cmake \
+    libc++1 \
+    libc++-dev \
+    libstdc++-12-dev \
+    libncurses5 \
+    libc++abi-dev \
+    libtinfo5 \
+	  zlib1g-dev \
+	  ninja-build \
+    postgresql-server-dev-$PG_MAJOR" \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends ${buildDependencies}
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+  && mkdir -p /tmp/build \
+  && cd /tmp/build \
+  && git clone --branch ${PGVS_VERSION} https://github.com/timescale/pgvectorscale \
+  && cd pgvectorscale/pgvectorscale \
+  && . "$HOME/.cargo/env" \
+  && cargo install --locked cargo-pgrx --version $(cargo metadata --format-version 1 | jq -r '.packages[] | select(.name == "pgrx") | .version') \
+  && cargo pgrx init --pg${PG_MAJOR} pg_config \
+  && cargo pgrx install --release
+
+RUN cd /tmp/build \
+  && git clone --branch ${AGE_BRANCH} https://github.com/apache/age.git \
+  && cd age \
+  && make install
+
+FROM pgvector/pgvector:0.8.1-pg17
+COPY --from=vec_age /usr/share/postgresql/${PG_MAJOR}/extension/ /usr/share/postgresql/${PG_MAJOR}/extension/
+COPY --from=vec_age /usr/lib/postgresql/${PG_MAJOR}/lib/*.so /usr/lib/postgresql/${PG_MAJOR}/lib/
